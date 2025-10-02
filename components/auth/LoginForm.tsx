@@ -1,8 +1,7 @@
 "use client";
 
-import { authApi, handleApiError } from "@/lib/api/client";
-import { useAuthActions } from "@/lib/store/auth";
-import { LoginRequest } from "@/lib/types";
+import { authApi, handleApiError } from "@/lib/api/authClient";
+import { useAuthActions } from "@/lib/store/authStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -68,10 +67,10 @@ export default function LoginForm() {
       const token = authResponse.accessToken;
 
       // Fetch user profile to get role information
-      const { userApi } = await import("@/lib/api/client");
+      const { userApi } = await import("@/lib/api/authClient");
 
       // Temporarily set token to make authenticated request
-      const tempClient = (await import("@/lib/api/client")).apiClient;
+      const tempClient = (await import("@/lib/api/authClient")).apiClient;
       tempClient.defaults.headers.Authorization = `Bearer ${token}`;
 
       const userProfile = await userApi.getProfile();

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NexusAuto - Vehicle Management System",
-  description: "Professional vehicle management and service platform",
+  title: "NexusAuto - Automobile Service Management System",
+  description: "Professional Automobile Service Management System",
 };
 
 export default function RootLayout({

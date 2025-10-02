@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/lib/store/auth";
+import { useAuth } from "@/lib/store/authStore";
 import Link from "next/link";
 
 /**
@@ -32,7 +32,7 @@ export default function HomePage() {
               <div className="space-y-4">
                 <p className="text-lg">
                   Welcome back,{" "}
-                  <span className="font-semibold">{user.firstName}</span>!
+                  <span className="font-semibold">{user.lastName}</span>!
                 </p>
                 <div className="flex flex-col justify-center gap-4 sm:flex-row">
                   <Link

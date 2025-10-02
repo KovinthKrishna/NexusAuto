@@ -1,7 +1,6 @@
 "use client";
 
-import { authApi, handleApiError } from "@/lib/api/client";
-import { RegisterRequest } from "@/lib/types";
+import { authApi, handleApiError } from "@/lib/api/authClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

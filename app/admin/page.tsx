@@ -1,8 +1,7 @@
 "use client";
 
 import { AdminOnly } from "@/components/auth/ProtectedRoute";
-import { adminApi, handleApiError } from "@/lib/api/client";
-import { RegisterRequest, UserResponse } from "@/lib/types";
+import { adminApi, handleApiError } from "@/lib/api/authClient";
 import { useEffect, useState } from "react";
 
 /**
@@ -86,7 +85,7 @@ function AdminDashboardContent() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
         <p className="mt-2 text-gray-600">
@@ -234,9 +233,6 @@ function AdminDashboardContent() {
                       Email
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      Role
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                       Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
@@ -256,11 +252,6 @@ function AdminDashboardContent() {
                         <div className="text-sm text-gray-900">
                           {employee.email}
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                          {employee.role.replace("ROLE_", "").toLowerCase()}
-                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span

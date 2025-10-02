@@ -1,8 +1,7 @@
 "use client";
 
-import { handleApiError, userApi } from "@/lib/api/client";
-import { useAuth, useAuthActions } from "@/lib/store/auth";
-import { ChangePasswordRequest, UpdateProfileRequest } from "@/lib/types";
+import { handleApiError, userApi } from "@/lib/api/authClient";
+import { useAuth, useAuthActions } from "@/lib/store/authStore";
 import { useState } from "react";
 
 /**
@@ -305,7 +304,7 @@ export default function ProfileManager() {
                         profileErrors.firstName
                           ? "border-red-300"
                           : "border-gray-300"
-                      } rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
+                      } rounded-md text-black shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
                     />
                     {profileErrors.firstName && (
                       <p className="mt-1 text-sm text-red-600">
@@ -330,7 +329,7 @@ export default function ProfileManager() {
                         profileErrors.lastName
                           ? "border-red-300"
                           : "border-gray-300"
-                      } rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
+                      } rounded-md text-black shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
                     />
                     {profileErrors.lastName && (
                       <p className="mt-1 text-sm text-red-600">
@@ -411,7 +410,7 @@ export default function ProfileManager() {
                       passwordErrors.currentPassword
                         ? "border-red-300"
                         : "border-gray-300"
-                    } rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
+                    } rounded-md text-black shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
                   />
                   {passwordErrors.currentPassword && (
                     <p className="mt-1 text-sm text-red-600">
@@ -436,7 +435,7 @@ export default function ProfileManager() {
                       passwordErrors.newPassword
                         ? "border-red-300"
                         : "border-gray-300"
-                    } rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
+                    } rounded-md text-black shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
                   />
                   {passwordErrors.newPassword && (
                     <p className="mt-1 text-sm text-red-600">
@@ -461,7 +460,7 @@ export default function ProfileManager() {
                       passwordErrors.confirmPassword
                         ? "border-red-300"
                         : "border-gray-300"
-                    } rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
+                    } rounded-md text-black shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm`}
                   />
                   {passwordErrors.confirmPassword && (
                     <p className="mt-1 text-sm text-red-600">

@@ -1,6 +1,12 @@
-import { AuthState, UserResponse } from "@/lib/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+interface AuthState {
+  token: string | null;
+  user: UserResponse | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+}
 
 interface AuthStore extends AuthState {
   // Actions
@@ -21,7 +27,6 @@ interface AuthStore extends AuthState {
 /**
  * Zustand store for authentication state management
  *
- * Features:
  * - Persists authentication state to localStorage
  * - Provides helper methods for role checking
  * - Manages loading states for UI feedback
@@ -86,28 +91,20 @@ export const useAuthStore = create<AuthStore>()(
   ),
 );
 
-/**
- * Hook to get authentication status and user info
- * Separated for components that only need read access
- */
+// Hook to get authentication status and user info
 export const useAuth = () => {
   const { token, user, isAuthenticated, isLoading } = useAuthStore();
   return { token, user, isAuthenticated, isLoading };
 };
 
-/**
- * Hook to get authentication actions
- * Separated for components that need to modify auth state
- */
+// Hook to get authentication actions
 export const useAuthActions = () => {
   const { setToken, setUser, login, logout, setLoading, updateUser } =
     useAuthStore();
   return { setToken, setUser, login, logout, setLoading, updateUser };
 };
 
-/**
- * Hook to get role checking utilities
- */
+// Hook to get role checking utilities
 export const useAuthRole = () => {
   const { hasRole, isAdmin, isEmployee, isCustomer } = useAuthStore();
   return { hasRole, isAdmin, isEmployee, isCustomer };

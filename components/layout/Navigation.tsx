@@ -1,19 +1,9 @@
 "use client";
 
-import { useAuth, useAuthActions } from "@/lib/store/auth";
+import { useAuth, useAuthActions } from "@/lib/store/authStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-/**
- * Navigation component with authentication awareness
- *
- * Features:
- * - Role-based navigation links
- * - User profile dropdown
- * - Logout functionality
- * - Responsive design
- * - Active link highlighting
- */
 export default function Navigation() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
@@ -36,25 +26,25 @@ export default function Navigation() {
           ...(user?.role === "ROLE_CUSTOMER"
             ? [
                 {
-                  name: "Customer Dashboard",
+                  name: "Dashboard",
                   href: "/customer",
                   roles: ["ROLE_CUSTOMER"],
                 },
               ]
             : []),
-          ...(user?.role === "ROLE_EMPLOYEE" || user?.role === "ROLE_ADMIN"
+          ...(user?.role === "ROLE_EMPLOYEE"
             ? [
                 {
-                  name: "Employee Dashboard",
+                  name: "Dashboard",
                   href: "/employee",
-                  roles: ["ROLE_EMPLOYEE", "ROLE_ADMIN"],
+                  roles: ["ROLE_EMPLOYEE"],
                 },
               ]
             : []),
           ...(user?.role === "ROLE_ADMIN"
             ? [
                 {
-                  name: "Admin Dashboard",
+                  name: "Dashboard",
                   href: "/admin",
                   roles: ["ROLE_ADMIN"],
                 },
@@ -104,7 +94,7 @@ export default function Navigation() {
                     {user.firstName} {user.lastName}
                   </span>
                   <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                    {user.role.replace("ROLE_", "").toLowerCase()}
+                    {user.role.replace("ROLE_", "")}
                   </span>
                 </div>
 
@@ -136,7 +126,7 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* Mobile menu (you can expand this later) */}
+      {/* Mobile menu */}
       <div className="sm:hidden">
         <div className="space-y-1 pt-2 pb-3">
           {filteredLinks.map((link) => (
