@@ -17,15 +17,15 @@ import { useRouter } from "next/navigation"; // Import useRouter
  */
 export default function CustomerDashboard() {
   return (
-   // <ProtectedRoute requiredRole={["ROLE_CUSTOMER"]}>
-      <CustomerDashboardContent />
-   // </ProtectedRoute>
+    // <ProtectedRoute requiredRole={["ROLE_CUSTOMER"]}>
+    <CustomerDashboardContent />
+    // </ProtectedRoute>
   );
 }
 
 function CustomerDashboardContent() {
   const { user } = useAuth();
-    const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
+  const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
   const router = useRouter(); // Initialize router
 
   const handleBookAppointment = () => {
@@ -185,10 +185,10 @@ function CustomerDashboardContent() {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <button 
-          onClick={handleBookAppointment} 
-          className="rounded-lg bg-blue-600 p-6 text-white transition-colors hover:bg-blue-700">
-            
+          <button
+            onClick={handleBookAppointment}
+            className="rounded-lg bg-blue-600 p-6 text-white transition-colors hover:bg-blue-700">
+
             <div className="text-center">
               <svg
                 className="mx-auto mb-2 h-8 w-8"
@@ -389,7 +389,7 @@ function CustomerDashboardContent() {
           </div>
         </div>
       </div>
-      <AddVehicle 
+      <AddVehicle
         isOpen={isAddVehicleOpen}
         onClose={() => setIsAddVehicleOpen(false)}
       />

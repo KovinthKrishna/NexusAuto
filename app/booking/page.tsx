@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { ServiceSelector } from '../components/serviceselector';
 import { AvailabilityDisplay } from '../components/availabilitydisplay';
 import { BookingForm } from '../components/bookingform';
+import { VehicleSelector } from '../components/VehicleSelector';
 import { bookingAPI } from '../utils/api';
-import { Center, Service, TimeSlot, AvailabilityResponse, BookingData } from '../types';
+import { Center, Service, TimeSlot, AvailabilityResponse, BookingData, Vehicle } from '../types';
 import { Card } from '../components/ui/card';
 import { SuccessModal } from '../components/successmodal';
 import { useRouter } from 'next/navigation';
@@ -18,16 +19,18 @@ const Home: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [availability, setAvailability] = useState<AvailabilityResponse | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  
-  const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
-  // Authentication check - must be before any conditional returns
+  const router = useRouter();
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  // Authentication check
   useEffect(() => {
     if (!isLoading) {
       setIsCheckingAuth(false);
@@ -37,30 +40,31 @@ const Home: React.FC = () => {
     }
   }, [isAuthenticated, isLoading, router]);
 
-  // Load centers and services on component mount - only if authenticated
+  // Load centers & services
   useEffect(() => {
-    if (!isAuthenticated || isCheckingAuth) return;
+    if (!isAuthenticated || isCheckingAuth || !user) return;
 
     const loadData = async () => {
       try {
-        const [centersData, servicesData] = await Promise.all([
+        const [centersData, servicesData, getVehicles] = await Promise.all([
           bookingAPI.getCenters(),
-          bookingAPI.getServices()
+          bookingAPI.getServices(),
+          bookingAPI.getVehicles(user.id)
         ]);
         setCenters(centersData);
         setServices(servicesData);
+        setVehicles(getVehicles);
       } catch (error) {
         console.error('Error loading data:', error);
       }
     };
 
     loadData();
-  }, [isAuthenticated, isCheckingAuth]);
+  }, [isAuthenticated, isCheckingAuth, user]);
 
-  // Check availability when center, service, or date changes - only if authenticated
+  // Check availability
   useEffect(() => {
     if (!isAuthenticated || isCheckingAuth) return;
-    
     if (selectedCenter && selectedService && selectedDate) {
       checkAvailability();
     } else {
@@ -68,7 +72,6 @@ const Home: React.FC = () => {
     }
   }, [selectedCenter, selectedService, selectedDate, isAuthenticated, isCheckingAuth]);
 
-  // Show loading while checking authentication
   if (isLoading || isCheckingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -80,7 +83,6 @@ const Home: React.FC = () => {
     );
   }
 
-  // Show nothing if not authenticated (will redirect in useEffect)
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -116,12 +118,23 @@ const Home: React.FC = () => {
   };
 
   const handleBookingSubmit = async (bookingData: BookingData) => {
+    if (!selectedVehicle) {
+      alert("Please select a vehicle before booking.");
+      return;
+    }
+
     setBookingLoading(true);
     try {
-      await bookingAPI.createBooking(bookingData);
+      const finalData = {
+        ...bookingData,
+        customer_id: user!.id,
+        vehicle_Name: selectedVehicle,
+      };
+
+      await bookingAPI.createBooking(finalData);
+
       setShowSuccessModal(true);
       setSelectedSlot(null);
-      // Refresh availability
       await checkAvailability();
     } catch (error) {
       console.error('Error creating booking:', error);
@@ -135,14 +148,9 @@ const Home: React.FC = () => {
     setShowSuccessModal(false);
     router.push('/');
   };
-  
-  const getSelectedService = () => {
-    return services.find(s => s.id === selectedService) || null;
-  };
 
-  const getSelectedCenter = () => {
-    return centers.find(c => c.id === selectedCenter) || null;
-  };
+  const getSelectedService = () => services.find(s => s.id === selectedService) || null;
+  const getSelectedCenter = () => centers.find(c => c.id === selectedCenter) || null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 py-8">
@@ -158,12 +166,14 @@ const Home: React.FC = () => {
         </button>
 
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-3">
-            Service Booking System
-          </h1>
-          <p className="text-lg text-gray-600">
-            Book your service appointment easily in a few clicks
-          </p>
+          <div>
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-3">
+              Service Booking System
+            </h1>
+            <p className="text-lg text-gray-600">
+              Book your service appointment easily in a few clicks
+            </p>
+          </div>
         </div>
 
         {/* Success Message */}
@@ -209,9 +219,17 @@ const Home: React.FC = () => {
           loading={loading}
         />
 
-        {/* Booking Form */}
+        {/* Booking Form + Vehicle Selector */}
         {selectedSlot && (
           <div className="mt-8 p-6 shadow-lg border border-gray-200 rounded-xl bg-white">
+            {/* Vehicle Selector */}
+            <VehicleSelector
+              vehicles={vehicles}
+              selectedVehicle={selectedVehicle}
+              onVehicleChange={setSelectedVehicle}
+            />
+
+            {/* Booking Form */}
             <BookingForm
               selectedSlot={selectedSlot}
               selectedCenter={getSelectedCenter()}

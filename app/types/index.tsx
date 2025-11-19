@@ -45,3 +45,8 @@ export interface Booking extends BookingData {
   center: Center;
   service: Service;
 }
+
+export interface Vehicle {
+  id: number;
+  type?: string;
+}
