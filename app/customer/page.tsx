@@ -2,7 +2,8 @@
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/store/authStore";
-
+import AddVehicle from "@/components/vehicle/AddVehicle";
+import { useState } from "react";
 /**
  * Customer Dashboard component
  *
@@ -22,6 +23,7 @@ export default function CustomerDashboard() {
 
 function CustomerDashboardContent() {
   const { user } = useAuth();
+    const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
@@ -198,7 +200,8 @@ function CustomerDashboardContent() {
             </div>
           </button>
 
-          <button className="rounded-lg bg-green-600 p-6 text-white transition-colors hover:bg-green-700">
+          <button className="rounded-lg bg-green-600 p-6 text-white transition-colors hover:bg-green-700 cursor-pointer"
+            onClick={() => setIsAddVehicleOpen(true)}>
             <div className="text-center">
               <svg
                 className="mx-auto mb-2 h-8 w-8"
@@ -376,6 +379,10 @@ function CustomerDashboardContent() {
           </div>
         </div>
       </div>
+      <AddVehicle 
+        isOpen={isAddVehicleOpen}
+        onClose={() => setIsAddVehicleOpen(false)}
+      />
     </div>
   );
 }

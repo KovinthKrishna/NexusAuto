@@ -13,7 +13,7 @@ export const apiClient = axios.create({
 });
 
 // Request interceptor to automatically add authorization header
-apiClient.interceptors.request.use(
+ apiClient.interceptors.request.use(
   (config) => {
     const { token } = useAuthStore.getState();
 
