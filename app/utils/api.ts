@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AvailabilityResponse, BookingData, Booking, Center, Service } from '../types';
+import { AvailabilityResponse, BookingData, Booking, Center, Service, Vehicle } from '../types';
 
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
@@ -35,4 +35,15 @@ export const bookingAPI = {
   const response = await api.get('/services/');
   return response.data;
   },
+
+  getVehicles: async (userId: number): Promise<Vehicle[]> => {
+    // const response = await api.get(`/vehicles/?user_id=${userId}`);
+    // return response.data;
+    return [
+    { id: 1, type: "Car A" },
+    { id: 2, type: "Bike B" },
+  ];
+  },
+
+
 };
