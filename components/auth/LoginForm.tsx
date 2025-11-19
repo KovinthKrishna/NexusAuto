@@ -84,7 +84,7 @@ export default function LoginForm() {
         ROLE_EMPLOYEE: "/employee",
         ROLE_CUSTOMER: "/customer",
       };
-
+      
       const redirectPath = roleRedirects[userProfile.role] || "/profile";
       router.push(redirectPath);
     } catch (error) {
