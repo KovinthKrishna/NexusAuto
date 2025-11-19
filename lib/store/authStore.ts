@@ -74,7 +74,7 @@ export const useAuthStore = create<AuthStore>()(
         const { user } = get();
         return user?.role === role;
       },
-
+      
       isAdmin: () => get().hasRole("ROLE_ADMIN"),
       isEmployee: () => get().hasRole("ROLE_EMPLOYEE"),
       isCustomer: () => get().hasRole("ROLE_CUSTOMER"),

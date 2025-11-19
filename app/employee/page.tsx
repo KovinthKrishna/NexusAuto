@@ -2,6 +2,7 @@
 
 import { EmployeeOnly } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/store/authStore";
+import { useRouter } from "next/navigation";
 
 /**
  * Employee Dashboard component
@@ -21,7 +22,20 @@ export default function EmployeeDashboard() {
 
 function EmployeeDashboardContent() {
   const { user } = useAuth();
+  const router = useRouter(); // Add router
 
+  // Add navigation handler
+  const handleNavigateToProjects = () => {
+    router.push('/employee/projects');
+  };
+
+  const handleNavigateToPendingProjects = () => {
+    router.push('/employee/projects/pending');
+  };
+  
+  const handleNavigateToCompletedProjects = () => {
+    router.push('/employee/projects/completed');
+  }
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -33,7 +47,8 @@ function EmployeeDashboardContent() {
 
       {/* Dashboard Cards */}
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-hidden rounded-lg bg-white shadow cursor-pointer"
+        onClick={handleNavigateToProjects}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -65,7 +80,8 @@ function EmployeeDashboardContent() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-hidden rounded-lg bg-white shadow cursor-pointer"
+        onClick={handleNavigateToCompletedProjects}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -97,7 +113,8 @@ function EmployeeDashboardContent() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-hidden rounded-lg bg-white shadow cursor-pointer"
+        onClick={handleNavigateToPendingProjects}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">

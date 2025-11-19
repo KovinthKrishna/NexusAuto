@@ -2,6 +2,8 @@
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/store/authStore";
+import AddVehicle from "@/components/vehicle/AddVehicle";
+import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter
 
 /**
@@ -15,14 +17,15 @@ import { useRouter } from "next/navigation"; // Import useRouter
  */
 export default function CustomerDashboard() {
   return (
-   // <ProtectedRoute requiredRole={["ROLE_CUSTOMER"]}>
-      <CustomerDashboardContent />
-   // </ProtectedRoute>
+    // <ProtectedRoute requiredRole={["ROLE_CUSTOMER"]}>
+    <CustomerDashboardContent />
+    // </ProtectedRoute>
   );
 }
 
 function CustomerDashboardContent() {
   const { user } = useAuth();
+  const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
   const router = useRouter(); // Initialize router
 
   const handleBookAppointment = () => {
@@ -182,10 +185,10 @@ function CustomerDashboardContent() {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <button 
-          onClick={handleBookAppointment} 
-          className="rounded-lg bg-blue-600 p-6 text-white transition-colors hover:bg-blue-700">
-            
+          <button
+            onClick={handleBookAppointment}
+            className="rounded-lg bg-blue-600 p-6 text-white transition-colors hover:bg-blue-700">
+
             <div className="text-center">
               <svg
                 className="mx-auto mb-2 h-8 w-8"
@@ -207,7 +210,8 @@ function CustomerDashboardContent() {
             </div>
           </button>
 
-          <button className="rounded-lg bg-green-600 p-6 text-white transition-colors hover:bg-green-700">
+          <button className="rounded-lg bg-green-600 p-6 text-white transition-colors hover:bg-green-700 cursor-pointer"
+            onClick={() => setIsAddVehicleOpen(true)}>
             <div className="text-center">
               <svg
                 className="mx-auto mb-2 h-8 w-8"
@@ -385,6 +389,10 @@ function CustomerDashboardContent() {
           </div>
         </div>
       </div>
+      <AddVehicle
+        isOpen={isAddVehicleOpen}
+        onClose={() => setIsAddVehicleOpen(false)}
+      />
     </div>
   );
 }

@@ -27,23 +27,21 @@ export const bookingAPI = {
   },
 
   getCenters: async (): Promise<Center[]> => {
-  const response = await api.get('/centers/');
-  return response.data;
+    const response = await api.get('/centers/');
+    return response.data;
   },
 
   getServices: async (): Promise<Service[]> => {
-  const response = await api.get('/services/');
-  return response.data;
+    const response = await api.get('/services/');
+    return response.data;
   },
 
   getVehicles: async (userId: number): Promise<Vehicle[]> => {
     // const response = await api.get(`/vehicles/?user_id=${userId}`);
     // return response.data;
     return [
-    { id: 1, type: "Car A" },
-    { id: 2, type: "Bike B" },
-  ];
+      { id: 1, type: "Car A" },
+      { id: 2, type: "Bike B" },
+    ];
   },
-
-
 };
